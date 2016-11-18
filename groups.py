@@ -26,8 +26,9 @@ class Group:
         return iter(self.elems)
 
 def cyclic(order):
-    return Group({(a, b): (a + b) % order for a in range(0, order) for b in
-        range(0, order)}, set(range(0, order)), identity=0)
+    rel = {(a, b): (a + b) % order for a in range(0, order)
+            for b in range(0, order)}
+    return Group(rel, set(range(0, order)), identity=0)
 
 def load(path):
     f = open(path, 'r')
