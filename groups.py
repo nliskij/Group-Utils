@@ -4,10 +4,10 @@ class Group:
         self.elems = elems
         self.id = identity
 
-    def inv(self, elem):
-        for pair in self.rel:
-            if elem in pair and self.rel[pair] == self.id:
-                return pair[0] if pair[0] != elem else pair[1]
+    def inv(self, g):
+        for h in self.elems:
+            if self.rel[g, h] == self.id:
+                return h
 
     def map(self, morph):
         return {x for x in map(morph, self.elems)}
