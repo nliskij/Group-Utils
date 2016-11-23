@@ -21,6 +21,9 @@ class Group:
     def automorph(self, g):
         return self.map(lambda h: self.rel[g, self.rel[h, self.inv(g)]])
 
+    def rewrite(self, g, h):
+        return self.rel[g, self.rel[h, self.inv(g)]]
+
     def __iter__(self):
 # I think I should've just made this inherit from set and dict
         return iter(self.elems)
