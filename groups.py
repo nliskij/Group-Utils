@@ -9,6 +9,9 @@ class Group:
             if self.rel[g, h] == self.id:
                 return h
 
+    def sub(self, subset):
+        return Group(self.rel, subset, identity=self.id) # Maybe trim rel
+    
     def map(self, morph):
         return {x for x in map(morph, self.elems)}
 
@@ -23,6 +26,19 @@ class Group:
 
     def rewrite(self, g, h):
         return self.rel[g, self.rel[h, self.inv(g)]]
+
+    def quot(self, N):
+        quotient = frozenset(frozenset(self.lcoset(g, N)) for g in self.elems)
+        quot_rel = {(a, b):
+                    next(filter(lambda G: self.rel[list(a)[0], list(b)[0]] in G, quotient))
+                    for a in quotient for b in quotient}
+        return Group(quot_rel, quotient, identity=N)
+
+    def comm_subgroup(self):
+        comms = {self.rel[a, self.rel[b, self.rel[self.inv(a), self.inv(b)]]] for a in self.elems for b in self.elems}
+        results = {self.rel[a, b] for a in comms for b in comms if self.rel[a, b] not in comms}
+
+        return Group(self.rel, comms.union(results), self.id)
 
     def __iter__(self):
 # I think I should've just made this inherit from set and dict
